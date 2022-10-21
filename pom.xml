@@ -62,8 +62,10 @@
     <description>This is the custom module (directive-filter) for running on a Jahia server.</description>
 
     <scm>
-        <connection>git@github.com:Jahia/directive-filter.git</connection>
-        <developerConnection>git@github.com:Jahia/directive-filter.git</developerConnection>
+        <connection>scm:git:git@github.com:Jahia/directive-filter.git</connection>
+        <developerConnection>scm:git:git@github.com:Jahia/directive-filter.git</developerConnection>
+        <url>https://github.com/Jahia/directive-filter</url>
+        <tag>1_x</tag>
     </scm>
 
     <repositories>
