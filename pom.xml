@@ -16,10 +16,7 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>jahia-modules</artifactId>
@@ -29,7 +26,7 @@
     <groupId>org.jahia.modules</groupId>
     <artifactId>directive-filter</artifactId>
     <name>Directive Filter</name>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>bundle</packaging>
     <description>This is the custom module (directive-filter) for running on a Jahia server.</description>
 
@@ -37,7 +34,7 @@
         <connection>scm:git:git@github.com:Jahia/directive-filter.git</connection>
         <developerConnection>scm:git:git@github.com:Jahia/directive-filter.git</developerConnection>
         <url>https://github.com/Jahia/directive-filter</url>
-        <tag>1_x</tag>
+        <tag>1_0_0</tag>
     </scm>
 
     <repositories>
