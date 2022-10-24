@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.foo.modules.directivefilter;
+package org.jahia.modules.directivefilter;
 
 import org.osgi.service.component.annotations.Component;
 
