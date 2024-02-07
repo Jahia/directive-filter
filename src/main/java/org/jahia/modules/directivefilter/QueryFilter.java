@@ -21,6 +21,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.util.stream.Collectors.joining;
@@ -30,6 +31,8 @@ public class QueryFilter implements Filter {
 
     // Detect strings such as @lala@lala@lala... and with space(s) in between @lala @lala
     private Pattern regex = Pattern.compile("(@[^ @]+[ ]*){10}");
+    private Pattern deep = Pattern.compile("\\{");
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -50,6 +53,23 @@ public class QueryFilter implements Filter {
                 return;
             }
 
+            Matcher matcher = deep.matcher(query);
+            int deepLevel = 0;
+            while (matcher.find()) {
+                deepLevel++;
+                if(deepLevel > 250) {
+                    break;
+                }
+            }
+
+            if(deepLevel > 250) {
+                HttpServletResponse resp = (HttpServletResponse) servletResponse;
+                resp.setContentType("application/json");
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().println("{\"message\": \"You can only use up to 250 depths\"}");
+                resp.getWriter().flush();
+                return;
+            }
             filterChain.doFilter(r, servletResponse);
             return;
         }
