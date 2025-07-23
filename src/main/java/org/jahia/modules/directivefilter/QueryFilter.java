@@ -74,8 +74,9 @@ public class QueryFilter implements Filter {
         // Cleanup logic if needed
     }
 
+    private static final int MAX_ALLOWED_DEPTH = 250;
+
     private void checkMaxDepth(String input) throws InvalidParameterException {
-        final int maxAllowedDepth = 250;
         int maxDepth = 0;
         int currentDepth = 0;
         char[] chars = input.toCharArray();
