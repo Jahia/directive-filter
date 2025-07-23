@@ -92,8 +92,8 @@ public class QueryFilter implements Filter {
                     throw new InvalidParameterException("Unmatched braces in input string");
                 }
             }
-            if (currentDepth > maxAllowedDepth) {
-                throw new InvalidParameterException("Maximum allowed depth exceeded: " + maxAllowedDepth);
+            if (currentDepth > MAX_ALLOWED_DEPTH) {
+                throw new InvalidParameterException("Maximum allowed depth exceeded: " + MAX_ALLOWED_DEPTH);
             }
         }
 
