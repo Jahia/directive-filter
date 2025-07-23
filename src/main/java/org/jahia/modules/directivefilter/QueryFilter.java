@@ -21,7 +21,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-// Removed unused import for InvalidParameterException
+import java.security.InvalidParameterException;
 import java.util.regex.Pattern;
 
 import static java.util.stream.Collectors.joining;
@@ -31,6 +31,7 @@ public class QueryFilter implements Filter {
 
     // Detect strings such as @lala@lala@lala... and with space(s) in between @lala @lala
     private static final Pattern DIRECTIVE_REGEX = Pattern.compile("(@[^ @]+[\\s]*){10}");
+    private static final int MAX_ALLOWED_DEPTH = 250;
 
     @Override
     public void init(FilterConfig filterConfig)  {
@@ -73,8 +74,6 @@ public class QueryFilter implements Filter {
     public void destroy() {
         // Cleanup logic if needed
     }
-
-    private static final int MAX_ALLOWED_DEPTH = 250;
 
     private void checkMaxDepth(String input) throws InvalidParameterException {
         int maxDepth = 0;
