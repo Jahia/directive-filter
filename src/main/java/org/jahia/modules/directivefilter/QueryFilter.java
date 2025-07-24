@@ -21,7 +21,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.regex.Matcher;
+import java.security.InvalidParameterException;
 import java.util.regex.Pattern;
 
 import static java.util.stream.Collectors.joining;
@@ -30,12 +30,12 @@ import static java.util.stream.Collectors.joining;
 public class QueryFilter implements Filter {
 
     // Detect strings such as @lala@lala@lala... and with space(s) in between @lala @lala
-    private Pattern regex = Pattern.compile("(@[^ @]+[ ]*){10}");
-    private Pattern deep = Pattern.compile("\\{");
+    private static final Pattern DIRECTIVE_REGEX = Pattern.compile("(@[^ @]+[\\s]*){10}");
+    private static final int MAX_ALLOWED_DEPTH = 250;
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
+    public void init(FilterConfig filterConfig)  {
+        // Initialization logic if needed
     }
 
     @Override
@@ -44,7 +44,7 @@ public class QueryFilter implements Filter {
             MultiReadRequestWrapper r = new MultiReadRequestWrapper((HttpServletRequest) servletRequest);
             String query = r.getReader().lines().collect(joining(" "));
 
-            if (regex.matcher(query).find()) {
+            if (DIRECTIVE_REGEX.matcher(query).find()) {
                 HttpServletResponse resp = (HttpServletResponse) servletResponse;
                 resp.setContentType("application/json");
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -53,20 +53,13 @@ public class QueryFilter implements Filter {
                 return;
             }
 
-            Matcher matcher = deep.matcher(query);
-            int deepLevel = 0;
-            while (matcher.find()) {
-                deepLevel++;
-                if(deepLevel > 250) {
-                    break;
-                }
-            }
-
-            if(deepLevel > 250) {
+            try {
+                checkMaxDepth(query);
+            } catch (InvalidParameterException e) {
                 HttpServletResponse resp = (HttpServletResponse) servletResponse;
                 resp.setContentType("application/json");
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                resp.getWriter().println("{\"message\": \"You can only use up to 250 depths\"}");
+                resp.getWriter().println("{\"message\": \"" + e.getMessage() + "\"}");
                 resp.getWriter().flush();
                 return;
             }
@@ -79,6 +72,34 @@ public class QueryFilter implements Filter {
 
     @Override
     public void destroy() {
-
+        // Cleanup logic if needed
     }
+
+    private void checkMaxDepth(String input) throws InvalidParameterException {
+        int maxDepth = 0;
+        int currentDepth = 0;
+        char[] chars = input.toCharArray();
+
+        for (char c : chars) {
+            if (c == '{') {
+                currentDepth++;
+                if (currentDepth > maxDepth) {
+                    maxDepth = currentDepth;
+                }
+            } else if (c == '}') {
+                currentDepth--;
+                if (currentDepth < 0) {
+                    throw new InvalidParameterException("Unmatched braces in input string");
+                }
+            }
+            if (currentDepth > MAX_ALLOWED_DEPTH) {
+                throw new InvalidParameterException("Maximum allowed depth exceeded: " + MAX_ALLOWED_DEPTH);
+            }
+        }
+
+        if (currentDepth != 0) {
+            throw new InvalidParameterException("Unmatched braces in input string");
+        }
+    }
+
 }
