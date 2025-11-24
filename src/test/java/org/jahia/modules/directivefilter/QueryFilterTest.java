@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ReadListener;
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +51,21 @@ class QueryFilterTest {
             @Override
             public int read() throws IOException {
                 return is.read();
+            }
+
+            @Override
+            public boolean isFinished() {
+                throw new UnsupportedOperationException("Unimplemented method 'isFinished'");
+            }
+
+            @Override
+            public boolean isReady() {
+                throw new UnsupportedOperationException("Unimplemented method 'isReady'");
+            }
+
+            @Override
+            public void setReadListener(ReadListener readListener) {
+                throw new UnsupportedOperationException("Unimplemented method 'setReadListener'");
             }
         });
     }
