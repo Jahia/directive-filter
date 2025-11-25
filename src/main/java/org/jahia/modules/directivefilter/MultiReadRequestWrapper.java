@@ -17,6 +17,7 @@ package org.jahia.modules.directivefilter;
 
 import org.apache.commons.io.IOUtils;
 
+import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -66,6 +67,21 @@ public class MultiReadRequestWrapper extends HttpServletRequestWrapper {
         @Override
         public int read() throws IOException {
             return input.read();
+        }
+
+        @Override
+        public boolean isFinished() {
+            throw new UnsupportedOperationException("Unimplemented method 'isFinished'");
+        }
+
+        @Override
+        public boolean isReady() {
+            throw new UnsupportedOperationException("Unimplemented method 'isReady'");
+        }
+
+        @Override
+        public void setReadListener(ReadListener readListener) {
+            throw new UnsupportedOperationException("Unimplemented method 'setReadListener'");
         }
     }
 }
