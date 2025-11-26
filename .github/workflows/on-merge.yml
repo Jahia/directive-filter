@@ -30,9 +30,9 @@ jobs:
     env:
       NEXUS_INTERNAL_URL: https://devtools.jahia.com/nexus/content/groups/internal/
     container:
-      image: jahia/cimg-mvn-cache:ga_cimg_openjdk_8.0.312-node
+      image: ghcr.io/jahia/jahia-docker-mvn-cache:8-jdk-noble-mvn-loaded
       credentials:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        username: ${{ secrets.GH_PACKAGES_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
     steps:
       - uses: actions/checkout@v2
@@ -81,8 +81,17 @@ jobs:
 #          github_artifact_name: content-editor-standalone-artifacts-${{ github.run_number }}
 #          bastion_ssh_private_key: ${{ secrets.BASTION_SSH_PRIVATE_KEY_JAHIACI }}
 #          jahia_license: ${{ secrets.JAHIA_LICENSE_8X_FULL }}
-#          docker_username: ${{ secrets.DOCKERHUB_USERNAME }}
-#          docker_password: ${{ secrets.DOCKERHUB_PASSWORD }}
+#          docker_registries:   [
+#               {
+#                 "registry": "ghcr.io",
+#                 "username": "${{ secrets.GH_PACKAGES_USERNAME }}",
+#                 "password": "${{ secrets.GH_PACKAGES_TOKEN }}"
+#               },
+#               {
+#                 "username": "${{ secrets.DOCKERHUB_USERNAME }}",
+#                 "password": "${{ secrets.DOCKERHUB_PASSWORD }}"
+#               }
+#             ]
 #          nexus_username: ${{ secrets.NEXUS_USERNAME }}
 #          nexus_password: ${{ secrets.NEXUS_PASSWORD }}
 #          tests_report_name: Test report (Standalone)
@@ -112,10 +121,10 @@ jobs:
     env:
       NEXUS_INTERNAL_URL: https://devtools.jahia.com/nexus/content/groups/internal/
     container:
-      image: jahia/cimg-mvn-cache:ga_cimg_openjdk_8.0.312-node
+      image: ghcr.io/jahia/jahia-docker-mvn-cache:8-jdk-noble-mvn-loaded
       credentials:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+        username: ${{ secrets.GH_PACKAGES_USERNAME}}
+        password: ${{ secrets.GH_PACKAGES_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - uses: jahia/jahia-modules-action/publish@v2
