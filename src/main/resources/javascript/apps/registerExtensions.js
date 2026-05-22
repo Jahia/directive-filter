@@ -17,7 +17,7 @@ window.jahia.uiExtender.registry.add('callback', 'directive-filterExample', {
             buttonLabel: 'directive-filter:label.action.title',
             targets: ['contentActions:999'],
             onClick: context => {
-                window.open('https://github.com/Jahia/app-shell/blob/master/docs/declare-new-module.md', "_blank");
+                window.open('https://github.com/Jahia/app-shell/blob/main/docs/declare-new-module.md', "_blank");
             }
         });
 
